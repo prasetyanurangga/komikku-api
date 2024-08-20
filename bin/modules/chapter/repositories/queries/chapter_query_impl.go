@@ -54,13 +54,13 @@ func (c ChapterQueryImpl) DetailChapter(endpoint string) utils.Result {
 
 	c.URL = config.GlobalEnv.BaseURL + endpoint
 	c.Collector.AllowURLRevisit = true
-	c.Collector.OnHTML("section[id=Baca_Komik]", func(e *colly.HTMLElement) {
+	c.Collector.OnHTML("div[id=Baca_Komik]", func(e *colly.HTMLElement) {
 		imageList := e.ChildAttrs("img", "src")
 		chapter.Image = imageList
 	})
-	c.Collector.OnHTML("header[id=Judul]", func(e *colly.HTMLElement) {
+	c.Collector.OnHTML("div[id=Judul]", func(e *colly.HTMLElement) {
 		if e.Index == 0 {
-			chapter.Title = e.ChildText("h1")
+			chapter.Title = e.ChildText("h2")
 		}
 	})
 	err := c.Collector.Visit(c.URL)
